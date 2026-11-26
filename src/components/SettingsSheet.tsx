@@ -61,3 +61,10 @@ export default function SettingsSheet({ visible, settings, onChange, onClose }: 
         </Modal>
     );
 }
+
+const s = StyleSheet.create({
+  back: { flex: 1, backgroundColor: 'rgba(15,25,40,0.45)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 22 },
+  title: { fontFamily: F.s, fontSize: 19, color: C.ink, marginBottom: 14 },
+  
+});
