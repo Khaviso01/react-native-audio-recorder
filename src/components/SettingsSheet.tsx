@@ -39,3 +39,13 @@ function Segment<T extends string | number>({ options, value, onChange }: Segmen
 
 // Props interface for Settings modal with visibility state, current settings, partial updater, and close callback
 interface Props { visible: boolean; settings: Settings; onChange: (patch: Partial<Settings>) => void; onClose: () => void }
+
+// Bottom-sheet style Settings modal using safe area insets and slide animation
+export default function SettingsSheet({ visible, settings, onChange, onClose }: Props) {
+  const insets = useSafeAreaInsets();
+  return (
+    <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
+      
+    </Modal>
+  );
+}
