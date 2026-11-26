@@ -33,7 +33,8 @@ function Body({ note, onClose, onSave }: Props & { note: Note }) {
             </View>
         </KeyboardAvoidingView>
     );
-}
+} 
+
 
 // Stylesheet for RenameDialog modal backdrop, card surface, text input, and action buttons
 const s = StyleSheet.create({
