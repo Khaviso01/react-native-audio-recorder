@@ -13,3 +13,10 @@ export default function RenameDialog({ note, onClose, onSave }: Props) {
     </Modal>
   );
 }
+
+function Body({ note, onClose, onSave }: Props & { note: Note }) {
+  const [v, setV] = useState(note.name);
+  return (
+   
+  );
+}
