@@ -36,3 +36,6 @@ function Segment<T extends string | number>({ options, value, onChange }: Segmen
     </View>
   );
 }
+
+// Props interface for Settings modal with visibility state, current settings, partial updater, and close callback
+interface Props { visible: boolean; settings: Settings; onChange: (patch: Partial<Settings>) => void; onClose: () => void }
