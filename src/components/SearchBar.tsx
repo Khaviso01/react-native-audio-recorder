@@ -5,3 +5,14 @@ import { C, F } from '../theme';
 
 // Props contract for a controlled text input component
 interface Props { value: string; onChangeText: (t: string) => void }
+
+// Controlled searchbar with leading search icon
+export default function SearchBar({ value, onChangeText }: Props) {
+  return (
+    <View style={s.box}>
+      <Ionicons name="search" size={16} color={C.mute} />
+      <TextInput value={value} onChangeText={onChangeText} placeholder="Search by name" placeholderTextColor={C.mute} style={s.input} />
+      {!!value && <Pressable onPress={() => onChangeText('')}><Ionicons name="close-circle" size={16} color={C.mute} /></Pressable>}
+    </View>
+  );
+}
