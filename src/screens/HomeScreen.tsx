@@ -53,3 +53,31 @@ export default function HomeScreen() {
         setSettings(next); store.saveSettings(next);
         if (patch.speed) player.setRate(patch.speed);
     };
+
+    // Request microphone permission, stop active playback, and open the recording screen if granted
+    const startRecording = async () => {
+    const { status, canAskAgain } = await Audio.requestPermissionsAsync();
+    if (status !== 'granted') {
+      return Alert.alert('Microphone access needed', 'Allow microphone access to record voice notes.',
+        canAskAgain ? [{ text: 'OK' }] : [{ text: 'Not now', style: 'cancel' }, { text: 'Open settings', onPress: () => Linking.openSettings() }]);
+    }
+    await player.stop();
+    setRecording(true);
+  };
+
+  // Close recording view, import the recorded audio file, and prepend the new note
+  const onSaved = async (rec: RecordingResult) => {
+    setRecording(false);
+    const note = await store.importRecording(rec, `Voice note ${notes.length + 1}`);
+    persist([note, ...notes]);
+  };
+
+  // Confirm deletion, stop playback if active, remove the audio file, and update note list
+  const remove = (note: Note) => Alert.alert('Delete voice note?', `“${note.name}” will be removed from this device.`, [
+    { text: 'Keep', style: 'cancel' },
+    { text: 'Delete', style: 'destructive', onPress: async () => {
+      if (player.activeId === note.id) await player.stop();
+      await store.deleteFile(note.file);
+      persist(notes.filter((n) => n.id !== note.id));
+    } },
+  ]);
