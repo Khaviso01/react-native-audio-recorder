@@ -54,3 +54,24 @@ export default function NoteItem({ note, player, onRename, onDelete }: Props) {
     </View>
   );
 }
+
+const s = StyleSheet.create({
+  item: { backgroundColor: C.card, borderRadius: 14, borderWidth: 1, borderColor: C.line, padding: 14, marginBottom: 10 },
+  row: { flexDirection: 'row', alignItems: 'center', gap: 12 },
+  name: { fontFamily: F.s, fontSize: 15, color: C.ink },
+  sub: { fontFamily: F.r, fontSize: 13, color: C.mute, marginTop: 3 },
+  dur: { fontFamily: F.m, fontSize: 14, color: C.ink },
+  // Circular outline play/pause button
+  play: { width: 30, height: 30, borderRadius: 15, borderWidth: 1.5, borderColor: C.blue, alignItems: 'center', justifyContent: 'center' },
+  // Generous vertical touch target around a thin 4px progress bar
+  track: { height: 22, justifyContent: 'center' },
+  bar: { height: 4, backgroundColor: C.line, borderRadius: 2 },
+  fill: { height: 4, backgroundColor: C.blue, borderRadius: 2, position: 'absolute', left: 0 },
+  ctrls: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 10 },
+  chip: { backgroundColor: C.tint, borderRadius: 12, paddingHorizontal: 12, paddingVertical: 5 },
+  chipTxt: { fontFamily: F.s, fontSize: 13, color: C.navy },
+  // Bottom divider separating playback controls from rename and delete actions
+  actions: { flexDirection: 'row', gap: 18, marginTop: 12, paddingTop: 10, borderTopWidth: 1, borderTopColor: C.line },
+  act: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  actTxt: { fontFamily: F.m, fontSize: 13, color: C.mute },
+});
