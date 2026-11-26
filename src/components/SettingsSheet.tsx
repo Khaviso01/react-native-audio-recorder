@@ -66,5 +66,8 @@ const s = StyleSheet.create({
   back: { flex: 1, backgroundColor: 'rgba(15,25,40,0.45)', justifyContent: 'flex-end' },
   sheet: { backgroundColor: '#fff', borderTopLeftRadius: 24, borderTopRightRadius: 24, padding: 22 },
   title: { fontFamily: F.s, fontSize: 19, color: C.ink, marginBottom: 14 },
-  
+  label: { fontFamily: F.m, fontSize: 13, color: C.mute, marginTop: 10, marginBottom: 8 },
+  seg: { flexDirection: 'row', backgroundColor: C.bg, borderRadius: 12, padding: 3 },
+  btn: { flex: 1, alignItems: 'center', paddingVertical: 9, borderRadius: 10 },
+  on: { backgroundColor: C.navy },
 });
