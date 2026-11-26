@@ -21,12 +21,25 @@ import type { Note, RecordingResult, Settings } from '../types';
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const player = usePlayer();
+
+  // Persistent state for saved recordings and app preferences
   const [notes, setNotes] = useState<Note[]>([]);
   const [ready, setReady] = useState(false);
+  
+  // UI state for search filtering and modal visibility
   const [query, setQuery] = useState('');
   const [settings, setSettings] = useState<Settings>(store.DEFAULT_SETTINGS);
   const [showSettings, setShowSettings] = useState(false);
   const [renaming, setRenaming] = useState<Note | null>(null);
   const [recording, setRecording] = useState(false);
 
-  
+  // Hydrate persisted notes and settings on mount, sync initial playback rate
+  useEffect(() => {
+    (async () => {
+      try {
+        const [n, st] = await Promise.all([store.loadNotes(), store.loadSettings()]);
+        setNotes(n); setSettings(st); player.setRate(st.speed);
+      } catch (e) { console.warn(e); }
+      setReady(true);
+    })();
+  }, []);
