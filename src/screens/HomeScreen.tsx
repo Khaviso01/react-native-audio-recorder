@@ -16,3 +16,17 @@ import usePlayer from '../hooks/usePlayer';
 import { C, F, SUPPORT_EMAIL } from '../theme';
 import * as store from '../utils/storage';
 import type { Note, RecordingResult, Settings } from '../types';
+
+// HomeScreen state setup managing playback, stored notes, search filter, settings modal, rename dialog, and recording mod
+export default function HomeScreen() {
+  const insets = useSafeAreaInsets();
+  const player = usePlayer();
+  const [notes, setNotes] = useState<Note[]>([]);
+  const [ready, setReady] = useState(false);
+  const [query, setQuery] = useState('');
+  const [settings, setSettings] = useState<Settings>(store.DEFAULT_SETTINGS);
+  const [showSettings, setShowSettings] = useState(false);
+  const [renaming, setRenaming] = useState<Note | null>(null);
+  const [recording, setRecording] = useState(false);
+
+  
