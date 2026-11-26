@@ -7,3 +7,5 @@ export default function Waveform({ bars }: { bars: number[] }) {
    
   );
 }
+
+const s = StyleSheet.create({ wave: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', height: 150, marginTop: 40 } });
