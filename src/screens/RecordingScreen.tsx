@@ -76,3 +76,12 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
     if (!uri) return onCancel();
     onSave({ uri, duration: st.durationMillis || msRef.current });
   };
+
+  // Stop and unload active recording, delete any temporary audio file, reset audio mode, and cancel
+  const discard = async () => {
+    const r = recRef.current; recRef.current = null;
+    // Clear ref early so cleanup does not attempt to unload twice
+    try { await r?.stopAndUnloadAsync(); const u = r?.getURI(); if (u) await FileSystem.deleteAsync(u, { idempotent: true }); } catch {}
+    await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
+    onCancel();
+  };
