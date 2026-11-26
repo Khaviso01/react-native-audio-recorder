@@ -43,6 +43,5 @@ const s = StyleSheet.create({
     input: { fontFamily: F.r, fontSize: 16, color: C.ink, borderWidth: 1, borderColor: C.line, borderRadius: 12, paddingHorizontal: 14, height: 46 },
     row: { flexDirection: 'row', justifyContent: 'flex-end', gap: 10, marginTop: 16 },
     btn: { paddingHorizontal: 20, height: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center' },
-
-
+    txt: { fontFamily: F.s, fontSize: 15, color: C.navy },
 });
