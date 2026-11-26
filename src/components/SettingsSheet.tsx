@@ -23,3 +23,16 @@ function Segment<T extends string | number>({ options, value, onChange }: Segmen
 
 // Props contract for the Settings modal controlling visibility, partial setting updates, and dismissal
 interface Props { visible: boolean; settings: Settings; onChange: (patch: Partial<Settings>) => void; onClose: () => void }
+
+// selector component rendering option buttons inside a segmented container.
+function Segment<T extends string | number>({ options, value, onChange }: SegmentProps<T>) {
+  return (
+    <View style={s.seg}>
+      {options.map(([v, label]) => (
+        <Pressable key={String(v)} onPress={() => onChange(v)} style={[s.btn, value === v && s.on]}>
+          <Text style={[s.txt, value === v && { color: '#fff' }]}>{label}</Text>
+        </Pressable>
+      ))}
+    </View>
+  );
+}
