@@ -8,3 +8,11 @@ import { C, F } from '../theme';
 interface Slot { onPress: () => void; icon: ReactNode }
 interface Props { title: string; left?: Slot; right?: Slot; light?: boolean }
 
+// 
+export default function ScreenTop({ title, left, right, light }: Props) {
+    // pressable icon slot with expanded hitSlop
+    const slot = (x?: Slot) => (x ? <Pressable onPress={x.onPress} hitSlop={10}>{x.icon}</Pressable> : <View style={{ width: 26 }} />);
+    return (
+   
+  );
+}
