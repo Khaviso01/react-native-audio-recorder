@@ -16,3 +16,12 @@ export default function usePlayer() {
 
   // Release the active Audio.Sound instance when the hook unmounts to prevent memory or audio leaks
    useEffect(() => () => { soundRef.current?.unloadAsync(); }, []);
+
+   // Stop playback, unload the active sound instance, and reset active note and progress state
+    const stop = async () => {
+    const s = soundRef.current;
+    // Clear ref first so concurrent or unmount cleanup does not double-unload
+    soundRef.current = null;
+    if (s) { try { await s.unloadAsync(); } catch {} }
+    setActiveId(null); setPb({ playing: false, pos: 0, dur: 0 });
+  };
