@@ -56,3 +56,23 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
     })();
     return () => { dead = true; recRef.current?.stopAndUnloadAsync().catch(() => {}); };
   }, []);
+
+  // Resume or pause the active recording session and update UI state
+  const toggle = async () => {
+    const r = recRef.current; if (!r) return;
+    if (paused) { await r.startAsync(); setPaused(false); } else { await r.pauseAsync(); setPaused(true); }
+  };
+
+  // Finalize recording, restore playback audio mode, read output URI, and pass result to onSave
+  const save = async () => {
+    const r = recRef.current; if (!r) return;
+    // Clear ref early so unmount cleanup does not double-unload the recording
+    recRef.current = null;
+    const st = await r.getStatusAsync();
+    await r.stopAndUnloadAsync();
+    // Switch iOS audio mode back to playback-only after recording finishes
+    await Audio.setAudioModeAsync({ allowsRecordingIOS: false, playsInSilentModeIOS: true });
+    const uri = r.getURI();
+    if (!uri) return onCancel();
+    onSave({ uri, duration: st.durationMillis || msRef.current });
+  };
