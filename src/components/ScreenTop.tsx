@@ -13,6 +13,10 @@ export default function ScreenTop({ title, left, right, light }: Props) {
     // pressable icon slot with expanded hitSlop
     const slot = (x?: Slot) => (x ? <Pressable onPress={x.onPress} hitSlop={10}>{x.icon}</Pressable> : <View style={{ width: 26 }} />);
     return (
-   
-  );
+        <View style={s.top}>
+            {slot(left)}
+            <Text style={[s.title, light && { color: '#fff' }]}>{title}</Text>
+            {slot(right)}
+        </View>
+    );
 }
