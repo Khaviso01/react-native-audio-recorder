@@ -11,7 +11,11 @@ interface SegmentProps<T> { options: [T, string][]; value: T; onChange: (v: T) =
 function Segment<T extends string | number>({ options, value, onChange }: SegmentProps<T>) {
   return (
     <View style={s.seg}>
-      
+      {options.map(([v, label]) => (
+        <Pressable key={String(v)} onPress={() => onChange(v)} style={[s.btn, value === v && s.on]}>
+          <Text style={[s.txt, value === v && { color: '#fff' }]}>{label}</Text>
+        </Pressable>
+      ))}
     </View>
   );
 }
