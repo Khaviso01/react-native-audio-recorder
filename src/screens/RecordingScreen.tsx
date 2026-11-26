@@ -25,3 +25,34 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
   const [ms, setMs] = useState(0);
   const [paused, setPaused] = useState(false);
   const [bars, setBars] = useState<number[]>(Array(41).fill(0.04));
+
+  // // Configure iOS audio session, prepare recording with selected quality and metering, and stream live waveform levels
+  useEffect(() => {
+    let dead = false;
+    (async () => {
+      try {
+        await Audio.setAudioModeAsync({ allowsRecordingIOS: true, playsInSilentModeIOS: true });
+        const preset = quality === 'high' ? Audio.RecordingOptionsPresets.HIGH_QUALITY : Audio.RecordingOptionsPresets.LOW_QUALITY;
+        const rec = new Audio.Recording();
+        // Enable metering so status callbacks report decibel levels for the waveform
+        await rec.prepareToRecordAsync({ ...preset, isMeteringEnabled: true });
+        rec.setProgressUpdateInterval(90);
+        rec.setOnRecordingStatusUpdate((st) => {
+          if (dead) return;
+          msRef.current = st.durationMillis; setMs(st.durationMillis);
+          // Normalize dB metering (-55 to 0 dBFS) into a clamped 0.04..1.0 bar height and shift the window
+          if (st.isRecording && typeof st.metering === 'number') {
+            const lvl = Math.max(0.04, Math.min(1, (st.metering + 55) / 55));
+            setBars((b) => [...b.slice(1), lvl]);
+          }
+        });
+        recRef.current = rec;
+        if (dead) { await rec.stopAndUnloadAsync().catch(() => {}); return; }
+        await rec.startAsync();
+      } catch {
+        Alert.alert('Recording failed', 'Could not start the microphone.');
+        onCancel();
+      }
+    })();
+    return () => { dead = true; recRef.current?.stopAndUnloadAsync().catch(() => {}); };
+  }, []);
