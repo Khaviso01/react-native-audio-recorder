@@ -27,3 +27,20 @@ export async function loadSettings(): Promise<Settings> {
   const raw = await AsyncStorage.getItem(KEY_SET);
   return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
 }
+
+// Persist user settings to AsyncStorage
+export const saveSettings = (s: Settings) => AsyncStorage.setItem(KEY_SET, JSON.stringify(s));
+
+// Moves a freshly recorded temp file into permanent storage and returns the note record.
+export async function importRecording({ uri, duration }: RecordingResult, name: string): Promise<Note> {
+  const ext = (uri.split('.').pop() ?? 'm4a').split('?')[0] || 'm4a';
+  const id = Date.now().toString();
+  const file = `${id}.${ext}`;
+  // Ensure target directory exists in case it was cleared or moved
+  await FileSystem.makeDirectoryAsync(DIR, { intermediates: true }).catch(() => {});
+  await FileSystem.moveAsync({ from: uri, to: DIR + file });
+  return { id, name, file, duration, createdAt: Date.now() };
+}
+
+// Delete an audio file from the recordings directory without failing if already absent
+export const deleteFile = (file: string) => FileSystem.deleteAsync(DIR + file, { idempotent: true });
