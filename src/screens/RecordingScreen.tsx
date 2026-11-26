@@ -110,3 +110,19 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
     </LinearGradient>
   );
 }
+
+// Stylesheet for RecordingScreen: status copy, large elapsed timer, bottom action row, and circular controls
+const s = StyleSheet.create({
+  screen: { flex: 1, paddingHorizontal: 4 },
+  msg: { fontFamily: F.r, fontSize: 22, lineHeight: 32, color: '#fff', textAlign: 'center', marginTop: 40 },
+  timer: { fontFamily: F.r, fontSize: 52, color: '#fff', textAlign: 'center', marginTop: 50, letterSpacing: 1 },
+  // Pushes the three action columns toward the bottom safe area while aligning button tops
+  btns: { flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', marginTop: 'auto', paddingHorizontal: 20 },
+  col: { alignItems: 'center', width: 90, gap: 10 },
+  // Secondary circular buttons for Pause/Resume and Discard
+  sm: { width: 62, height: 62, borderRadius: 31, backgroundColor: 'rgba(27,68,104,0.55)', alignItems: 'center', justifyContent: 'center' },
+  // Prominent circular Save button
+  big: { width: 88, height: 88, borderRadius: 44, backgroundColor: '#fff', alignItems: 'center', justifyContent: 'center' },
+  lbl: { fontFamily: F.m, fontSize: 12, letterSpacing: 1, color: '#fff', textTransform: 'uppercase' },
+});
+
