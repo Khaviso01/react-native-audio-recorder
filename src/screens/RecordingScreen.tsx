@@ -1,15 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
-import * as FileSystem from 'expo-file-system';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ScreenTop from '../components/ScreenTop';
 import Waveform from '../components/Waveform';
 import { C, F } from '../theme';
 import { fmt } from '../utils/format';
+import { notify } from '../utils/dialog';
+import { discardTemp } from '../utils/storage';
 import type { Quality, RecordingResult } from '../types';
 
 // Props for RecordingScreen: target audio quality, cancel handler, and save callback with recording result
@@ -50,7 +51,7 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
         if (dead) { await rec.stopAndUnloadAsync().catch(() => {}); return; }
         await rec.startAsync();
       } catch {
-        Alert.alert('Recording failed', 'Could not start the microphone.');
+        notify('Recording failed', 'Could not start the microphone.');
         onCancel();
       }
     })();
@@ -81,7 +82,7 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
   const discard = async () => {
     const r = recRef.current; recRef.current = null;
     // Clear ref early so cleanup does not attempt to unload twice
-    try { await r?.stopAndUnloadAsync(); const u = r?.getURI(); if (u) await FileSystem.deleteAsync(u, { idempotent: true }); } catch {}
+    try { await r?.stopAndUnloadAsync(); const u = r?.getURI(); if (u) await discardTemp(u); } catch {}
     await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
     onCancel();
   };

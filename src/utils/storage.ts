@@ -44,3 +44,6 @@ export async function importRecording({ uri, duration }: RecordingResult, name: 
 
 // Delete an audio file from the recordings directory without failing if already absent
 export const deleteFile = (file: string) => FileSystem.deleteAsync(DIR + file, { idempotent: true });
+export const getUri = async (note: Note): Promise<string> => DIR + note.file;
+export const deleteAudio = (note: Note): Promise<void> => FileSystem.deleteAsync(DIR + note.file, { idempotent: true });
+export const discardTemp = (uri: string): Promise<void> => FileSystem.deleteAsync(uri, { idempotent: true }).catch(() => {});
