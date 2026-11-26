@@ -8,6 +8,7 @@ import type { Quality, Settings } from '../types';
 // props contract for a segmented option selector
 interface SegmentProps<T> { options: [T, string][]; value: T; onChange: (v: T) => void }
 
+// segmented control component for selecting between string or number options
 function Segment<T extends string | number>({ options, value, onChange }: SegmentProps<T>) {
   return (
     <View style={s.seg}>
@@ -19,3 +20,6 @@ function Segment<T extends string | number>({ options, value, onChange }: Segmen
     </View>
   );
 }
+
+// Props contract for the Settings modal controlling visibility, partial setting updates, and dismissal
+interface Props { visible: boolean; settings: Settings; onChange: (patch: Partial<Settings>) => void; onClose: () => void }
