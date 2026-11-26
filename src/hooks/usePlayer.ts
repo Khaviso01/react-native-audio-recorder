@@ -14,4 +14,5 @@ export default function usePlayer() {
   const [pb, setPb] = useState({ playing: false, pos: 0, dur: 0 });
   const [rate, setRateState] = useState(1);
 
-  
+  // Release the active Audio.Sound instance when the hook unmounts to prevent memory or audio leaks
+   useEffect(() => () => { soundRef.current?.unloadAsync(); }, []);
