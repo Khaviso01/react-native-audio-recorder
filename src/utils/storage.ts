@@ -18,3 +18,12 @@ export async function loadNotes(): Promise<Note[]> {
   for (const n of list) if ((await FileSystem.getInfoAsync(DIR + n.file)).exists) ok.push(n);
   return ok;
 }
+
+// Persist the notes array to AsyncStorage
+export const saveNotes = (list: Note[]) => AsyncStorage.setItem(KEY, JSON.stringify(list));
+
+// Load persisted settings from AsyncStorage, merging with DEFAULT_SETTINGS for any missing fields
+export async function loadSettings(): Promise<Settings> {
+  const raw = await AsyncStorage.getItem(KEY_SET);
+  return raw ? { ...DEFAULT_SETTINGS, ...JSON.parse(raw) } : DEFAULT_SETTINGS;
+}
