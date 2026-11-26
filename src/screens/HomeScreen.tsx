@@ -81,3 +81,11 @@ export default function HomeScreen() {
       persist(notes.filter((n) => n.id !== note.id));
     } },
   ]);
+
+  // Filter saved notes case-insensitively by trimmed search query
+   const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return q ? notes.filter((n) => n.name.toLowerCase().includes(q)) : notes;
+  }, [notes, query]);
+
+  
