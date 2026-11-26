@@ -23,4 +23,5 @@ const s = StyleSheet.create({
         flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#fff', borderRadius: 14, borderWidth: 1,
         borderColor: C.line, paddingHorizontal: 12, height: 44, marginBottom: 12
     },
+    input: { flex: 1, fontFamily: F.r, fontSize: 15, color: C.ink },
 });
