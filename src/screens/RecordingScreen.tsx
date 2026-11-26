@@ -85,3 +85,28 @@ export default function RecordingScreen({ quality, onCancel, onSave }: Props) {
     await Audio.setAudioModeAsync({ allowsRecordingIOS: false });
     onCancel();
   };
+
+   return (
+    <LinearGradient colors={[C.deep, C.blue]} style={[s.screen, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 28 }]}>
+      <StatusBar style="light" />
+      <ScreenTop light title="Recording" left={{ onPress: discard, icon: <Ionicons name="chevron-back" size={26} color="#fff" /> }} />
+      <Text style={s.msg}>{paused ? 'Paused.\nResume when you are ready.' : 'You are now recording.\nEvery word matters!'}</Text>
+      <Waveform bars={bars} />
+      <Text style={s.timer}>{fmt(ms, true)}</Text>
+      <View style={s.btns}>
+        <View style={s.col}>
+          <Pressable onPress={toggle} style={s.sm}><Ionicons name={paused ? 'mic' : 'pause'} size={24} color="#fff" /></Pressable>
+          <Text style={s.lbl}>{paused ? 'Resume' : 'Pause'}</Text>
+        </View>
+        <View style={s.col}>
+          <Pressable onPress={save} style={s.big}><Ionicons name="checkmark" size={44} color={C.deep} /></Pressable>
+          <Text style={s.lbl}>Save</Text>
+        </View>
+        <View style={s.col}>
+          <Pressable onPress={discard} style={s.sm}><Ionicons name="close" size={26} color="#fff" /></Pressable>
+          <Text style={s.lbl}>Discard</Text>
+        </View>
+      </View>
+    </LinearGradient>
+  );
+}
