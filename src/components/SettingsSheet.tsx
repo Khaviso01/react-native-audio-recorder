@@ -1,0 +1,17 @@
+import React from 'react';
+import { Linking, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { C, F, SPEEDS, SUPPORT_EMAIL } from '../theme';
+import type { Quality, Settings } from '../types';
+
+// props contract for a segmented option selector
+interface SegmentProps<T> { options: [T, string][]; value: T; onChange: (v: T) => void }
+
+function Segment<T extends string | number>({ options, value, onChange }: SegmentProps<T>) {
+  return (
+    <View style={s.seg}>
+      
+    </View>
+  );
+}
