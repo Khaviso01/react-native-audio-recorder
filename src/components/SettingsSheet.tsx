@@ -70,4 +70,7 @@ const s = StyleSheet.create({
   seg: { flexDirection: 'row', backgroundColor: C.bg, borderRadius: 12, padding: 3 },
   btn: { flex: 1, alignItems: 'center', paddingVertical: 9, borderRadius: 10 },
   on: { backgroundColor: C.navy },
+  txt: { fontFamily: F.m, fontSize: 14, color: C.ink },
+  support: { flexDirection: 'row', alignItems: 'center', gap: 8, marginTop: 22 },
+  supportTxt: { fontFamily: F.m, fontSize: 15, color: C.navy },
 });
