@@ -19,27 +19,37 @@ import type { Note, RecordingResult, Settings } from '../types';
 
 // HomeScreen state setup managing playback, stored notes, search filter, settings modal, rename dialog, and recording mod
 export default function HomeScreen() {
-  const insets = useSafeAreaInsets();
-  const player = usePlayer();
+    const insets = useSafeAreaInsets();
+    const player = usePlayer();
 
-  // Persistent state for saved recordings and app preferences
-  const [notes, setNotes] = useState<Note[]>([]);
-  const [ready, setReady] = useState(false);
-  
-  // UI state for search filtering and modal visibility
-  const [query, setQuery] = useState('');
-  const [settings, setSettings] = useState<Settings>(store.DEFAULT_SETTINGS);
-  const [showSettings, setShowSettings] = useState(false);
-  const [renaming, setRenaming] = useState<Note | null>(null);
-  const [recording, setRecording] = useState(false);
+    // Persistent state for saved recordings and app preferences
+    const [notes, setNotes] = useState<Note[]>([]);
+    const [ready, setReady] = useState(false);
 
-  // Hydrate persisted notes and settings on mount, sync initial playback rate
-  useEffect(() => {
-    (async () => {
-      try {
-        const [n, st] = await Promise.all([store.loadNotes(), store.loadSettings()]);
-        setNotes(n); setSettings(st); player.setRate(st.speed);
-      } catch (e) { console.warn(e); }
-      setReady(true);
-    })();
-  }, []);
+    // UI state for search filtering and modal visibility
+    const [query, setQuery] = useState('');
+    const [settings, setSettings] = useState<Settings>(store.DEFAULT_SETTINGS);
+    const [showSettings, setShowSettings] = useState(false);
+    const [renaming, setRenaming] = useState<Note | null>(null);
+    const [recording, setRecording] = useState(false);
+
+    // Hydrate persisted notes and settings on mount, sync initial playback rate
+    useEffect(() => {
+        (async () => {
+            try {
+                const [n, st] = await Promise.all([store.loadNotes(), store.loadSettings()]);
+                setNotes(n); setSettings(st); player.setRate(st.speed);
+            } catch (e) { console.warn(e); }
+            setReady(true);
+        })();
+    }, []);
+
+    // Update notes state and persist changes to storage
+    const persist = useCallback((list: Note[]) => { setNotes(list); store.saveNotes(list); }, []);
+
+    // Merge setting changes, persist preferences, and sync playback speed if modified
+    const updateSettings = (patch: Partial<Settings>) => {
+        const next = { ...settings, ...patch };
+        setSettings(next); store.saveSettings(next);
+        if (patch.speed) player.setRate(patch.speed);
+    };
