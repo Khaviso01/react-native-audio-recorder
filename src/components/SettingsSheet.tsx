@@ -45,7 +45,11 @@ export default function SettingsSheet({ visible, settings, onChange, onClose }: 
   const insets = useSafeAreaInsets();
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
-      
+      <Pressable style={s.back} onPress={onClose}>
+        <Pressable style={[s.sheet, { paddingBottom: insets.bottom + 20 }]}>
+          
+        </Pressable>
+      </Pressable>
     </Modal>
   );
 }
