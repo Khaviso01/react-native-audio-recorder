@@ -11,3 +11,6 @@ import Waveform from '../components/Waveform';
 import { C, F } from '../theme';
 import { fmt } from '../utils/format';
 import type { Quality, RecordingResult } from '../types';
+
+// Props for RecordingScreen: target audio quality, cancel handler, and save callback with recording result
+interface Props { quality: Quality; onCancel: () => void; onSave: (r: RecordingResult) => void }
