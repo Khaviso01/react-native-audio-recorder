@@ -17,3 +17,4 @@ export default function NoteItem({ note, player, onRename, onDelete }: Props) {
   const dur = open && pb.dur ? pb.dur : note.duration; // Use live player duration when active, otherwise fall back to stored note duration
   const pct = open && pb.dur ? pb.pos / pb.dur : 0; // Compute normalized playback progress (0 to 1) when active
   const playing = open && pb.playing;
+
