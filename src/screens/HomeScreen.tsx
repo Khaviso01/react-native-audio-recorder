@@ -88,4 +88,15 @@ export default function HomeScreen() {
     return q ? notes.filter((n) => n.name.toLowerCase().includes(q)) : notes;
   }, [notes, query]);
 
-  
+  // List header combining the primary record button, total recording count, and search input
+   const Header = (
+    <View>
+      <RecordButton onPress={startRecording} />
+      <View style={s.sectionRow}>
+        <Text style={s.section}>Previous Recordings</Text>
+        <Text style={s.count}>{notes.length}</Text>
+      </View>
+      <SearchBar value={query} onChangeText={setQuery} />
+    </View>
+  );
+
