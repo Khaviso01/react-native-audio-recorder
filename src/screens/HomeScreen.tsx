@@ -100,3 +100,30 @@ export default function HomeScreen() {
     </View>
   );
 
+   return (
+    <View style={[s.screen, { paddingTop: insets.top }]}>
+      <StatusBar style="dark" />
+      <ScreenTop title="Record"
+        left={{ onPress: () => setShowSettings(true), icon: <Ionicons name="options" size={24} color={C.ink} /> }}
+        right={{ onPress: () => Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=Voice%20Journal%20feedback`), icon: <Ionicons name="chatbubble-ellipses-outline" size={23} color={C.ink} /> }} />
+      <FlatList
+        data={filtered} keyExtractor={(n) => n.id} keyboardShouldPersistTaps="handled"
+        ListHeaderComponent={Header}
+        renderItem={({ item }) => <NoteItem note={item} player={player} onRename={() => setRenaming(item)} onDelete={() => remove(item)} />}
+        contentContainerStyle={{ paddingHorizontal: 20, paddingBottom: insets.bottom + 110 }}
+        ListEmptyComponent={ready ? <Text style={s.empty}>{query ? `No notes match “${query}”.` : 'No recordings yet. Tap the mic to make your first note.'}</Text> : null}
+      />
+      <LinearGradient colors={['rgba(238,241,248,0)', C.bg]} style={[s.fade, { height: insets.bottom + 110 }]} pointerEvents="none" />
+      <Pressable onPress={startRecording} style={[s.newBtn, { bottom: insets.bottom + 24 }]}>
+        <Ionicons name="add" size={22} color={C.ink} /><Text style={s.newTxt}>New</Text>
+      </Pressable>
+
+      <Modal visible={recording} animationType="slide" onRequestClose={() => {}}>
+        <RecordingScreen quality={settings.quality} onCancel={() => setRecording(false)} onSave={onSaved} />
+      </Modal>
+      <RenameDialog note={renaming} onClose={() => setRenaming(null)}
+        onSave={(name) => { if (!renaming) return; persist(notes.map((n) => (n.id === renaming.id ? { ...n, name } : n))); setRenaming(null); }} />
+      <SettingsSheet visible={showSettings} settings={settings} onChange={updateSettings} onClose={() => setShowSettings(false)} />
+    </View>
+  );
+}
