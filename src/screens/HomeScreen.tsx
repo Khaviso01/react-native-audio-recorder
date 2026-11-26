@@ -127,3 +127,18 @@ export default function HomeScreen() {
     </View>
   );
 }
+
+const s = StyleSheet.create({
+  screen: { flex: 1, backgroundColor: C.bg },
+  sectionRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 18, marginBottom: 12 },
+  section: { fontFamily: F.s, fontSize: 18, color: C.ink },
+  count: { fontFamily: F.m, fontSize: 13, color: C.blue },
+  empty: { fontFamily: F.r, fontSize: 14, color: C.mute, textAlign: 'center', marginTop: 20, lineHeight: 20 },
+  // Non-interactive gradient overlay softening list items behind the floating action button
+  fade: { position: 'absolute', left: 0, right: 0, bottom: 0 },
+  // Centered pill CTA with iOS shadow and Android elevation
+  newBtn: { position: 'absolute', alignSelf: 'center', flexDirection: 'row', alignItems: 'center', gap: 6, backgroundColor: C.sky,
+    paddingHorizontal: 30, height: 52, borderRadius: 26, shadowColor: C.sky, shadowOpacity: 0.5, shadowRadius: 14,
+    shadowOffset: { width: 0, height: 8 }, elevation: 8 },
+  newTxt: { fontFamily: F.s, fontSize: 16, color: C.ink, letterSpacing: 0.5 },
+});
