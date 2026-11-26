@@ -3,7 +3,7 @@ import { Alert, FlatList, Linking, Modal, Platform, Pressable, StyleSheet, Text,
 import { StatusBar } from 'expo-status-bar';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { Audio } from 'expo-av';
+import { AudioModule } from 'expo-audio';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import ScreenTop from '../components/ScreenTop';
 import RecordButton from '../components/RecordButton';
@@ -57,7 +57,7 @@ export default function HomeScreen() {
 
   // Request microphone permission, stop active playback, and open the recording screen if granted
   const startRecording = async () => {
-    const { status, canAskAgain } = await Audio.requestPermissionsAsync();
+    const { status, canAskAgain } = await AudioModule.requestRecordingPermissionsAsync();
     if (status !== 'granted') {
       if (Platform.OS === 'web' || canAskAgain) return notify('Microphone access needed', 'Allow microphone access to record voice notes.');
       return Alert.alert('Microphone access needed', 'Allow microphone access to record voice notes.',
