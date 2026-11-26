@@ -20,3 +20,9 @@ export default function ScreenTop({ title, left, right, light }: Props) {
         </View>
     );
 }
+
+// Stylesheet for ScreenTop layout bar and uppercase tracking title
+const s = StyleSheet.create({
+  top: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, height: 48 },
+  title: { fontFamily: F.s, fontSize: 17, letterSpacing: 1.2, color: C.ink, textTransform: 'uppercase' },
+});
