@@ -21,7 +21,16 @@ function Body({ note, onClose, onSave }: Props & { note: Note }) {
     const [v, setV] = useState(note.name);
     return (
         <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : undefined} style={s.back}>
-            
+            <View style={s.dialog}>
+                <Text style={s.title}>Rename voice note</Text>
+                <TextInput value={v} onChangeText={setV} autoFocus selectTextOnFocus style={s.input} maxLength={60} />
+                <View style={s.row}>
+                    <Pressable onPress={onClose} style={s.btn}><Text style={s.txt}>Cancel</Text></Pressable>
+                    <Pressable onPress={() => v.trim() && onSave(v.trim())} style={[s.btn, { backgroundColor: C.navy }]}>
+                        <Text style={[s.txt, { color: '#fff' }]}>Save</Text>
+                    </Pressable>
+                </View>
+            </View>
         </KeyboardAvoidingView>
     );
 }
