@@ -51,6 +51,11 @@ export default function SettingsSheet({ visible, settings, onChange, onClose }: 
                     <Text style={s.label}>Recording quality</Text>
                     <Segment<Quality> value={settings.quality} onChange={(quality) => onChange({ quality })} options={[['high', 'High'], ['low', 'Small file']]} />
                     <Text style={s.label}>Default playback speed</Text>
+                    <Segment<number> value={settings.speed} onChange={(speed) => onChange({ speed })} options={SPEEDS.map((v): [number, string] => [v, `${v}×`])} />
+                    <Pressable onPress={() => Linking.openURL(`mailto:${SUPPORT_EMAIL}?subject=Voice%20Journal%20support`)} style={s.support}>
+                        <Ionicons name="help-circle-outline" size={20} color={C.navy} />
+                        <Text style={s.supportTxt}>Send feedback or get support</Text>
+                    </Pressable>
                 </Pressable>
             </Pressable>
         </Modal>
