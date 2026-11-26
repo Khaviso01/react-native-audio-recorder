@@ -1,56 +1,138 @@
-# Welcome to your Expo app 👋
+# Voice Journal
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A voice-notes app built with React Native (Expo) and TypeScript. Record audio, play it back, rename and delete notes, and search them by name. Notes are saved on the device, so they are still there after you close and reopen the app. It runs on Android, iOS (via Expo Go) and the web.
 
-## Get started
+## Features
 
-1. Install dependencies
+- Record audio with pause, resume, save and discard, plus a live waveform and timer
+- List of voice notes with date, time and duration
+- Playback with play/pause, seek bar, 10-second skip, stop and speed control (0.75x to 2x)
+- Rename and delete notes
+- Search notes by name
+- Settings for recording quality and default playback speed
+- Microphone permission handling
+- Works offline, with notes saved across restarts
+- Feedback and support link
+- Geist font and a design based on the supplied UI
 
-   ```bash
-   npm install
-   ```
+## Tech stack
 
-2. Start the app
+| Area | Library |
+|------|---------|
+| Framework | Expo SDK 58, React Native, TypeScript |
+| Navigation / entry | expo-router |
+| Recording and playback | expo-audio |
+| Storage | expo-file-system (phone files), IndexedDB (web), AsyncStorage (note details and settings) |
+| UI | expo-linear-gradient, @expo/vector-icons, Geist font |
 
-   ```bash
-   npx expo start
-   ```
+## Prerequisites
 
-In the output, you'll find options to open the app in a
+- [Node.js](https://nodejs.org) 20 or newer (check with `node -v`)
+- [Git](https://git-scm.com)
+- To test on a phone: the **Expo Go** app from the Play Store or App Store. It must support Expo SDK 58, and your phone and computer must be on the same Wi-Fi.
+- To test on the web: Google Chrome
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Getting started
 
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+### 1. Clone the project
 
 ```bash
-npm run reset-project
+git clone <your-repository-url>
+cd react-native-audio-recorder
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+### 2. Install dependencies
 
-### Other setup steps
+```bash
+npm install
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+If Expo reports mismatched package versions, fix them with:
 
-## Learn more
+```bash
+npx expo install --fix
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### 3. Start the app
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+npx expo start -c
+```
 
-## Join the community
+The `-c` flag clears the cache. You can leave it off on later runs.
 
-Join our community of developers creating universal apps.
+### 4. Open it
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- **Web:** press `w` in the terminal. Click **Allow** when Chrome asks for the microphone. The web version must run on `localhost` or https.
+- **Phone:** scan the QR code with Expo Go. On Android, use the scanner inside Expo Go. On iPhone, use the Camera app. If it won't connect, stop the server with `Ctrl+C` and run `npx expo start --tunnel`.
+- **Android emulator:** with Android Studio set up, press `a` in the terminal.
+
+## Build an installable app (Android APK)
+
+```bash
+npm install -g eas-cli
+eas login
+eas build:configure
+eas build -p android --profile preview
+```
+
+When the build finishes, EAS gives you a link to download the `.apk` and install it on your phone. For iOS you need an Apple Developer account.
+
+## Project structure
+
+```
+app/
+  _layout.tsx           Router layout (header hidden)
+  index.tsx             Home route: loads fonts, renders HomeScreen
+src/
+  screens/              HomeScreen (list, search, settings), RecordingScreen
+  components/           NoteItem, RecordButton, SearchBar, RenameDialog,
+                        SettingsSheet, Waveform, ScreenTop
+  hooks/usePlayer.ts    Playback logic (play, pause, seek, speed)
+  utils/
+    storage.ts          Phone storage (files on disk)
+    storage.web.ts      Web storage (IndexedDB)
+    dialog.ts           Alerts that also work on web
+    format.ts           Time and date formatting
+  theme.ts              Colours, Geist font names, support email
+  types.ts              Shared TypeScript types
+```
+
+## How storage works
+
+Expo automatically picks the right storage file for the platform:
+
+- **Phone:** the recording is moved into the app's document folder (`recordings/`). Note details (name, date, duration) are saved in AsyncStorage.
+- **Web:** the recording is saved in the browser's IndexedDB. Note details are saved in localStorage. Web notes stay in that browser only, and clearing browser data removes them.
+
+## Permissions
+
+The app asks for microphone access the first time you record. If you deny it on a phone, the app offers a shortcut to the settings. The permission text is set in `app.json` through the `expo-audio` plugin.
+
+## Testing checklist
+
+1. Record a note, pause and resume, then save it.
+2. Check the note shows its date, time and duration.
+3. Play it, then try the speed chip, the skip arrows, the stop button and the seek bar.
+4. Rename it, then search for the new name.
+5. Delete it and confirm.
+6. Record another note, close the app completely and reopen it. The note should still be there.
+
+## Troubleshooting
+
+| Problem | Fix |
+|---------|-----|
+| `Requiring unknown module` error | Stop the server and run `npx expo start -c` |
+| `expo-asset` or other package not found | Delete `node_modules` and `package-lock.json`, then run `npm install` |
+| `Cannot find module 'expo-av'` | `expo-av` is no longer used. Make sure every file imports from `expo-audio` instead |
+| Phone can't connect | Same Wi-Fi on both devices, or use `npx expo start --tunnel` |
+| No microphone on web | Use Chrome on `localhost` and allow the permission from the address bar |
+| Red errors in VS Code after an install | Run **TypeScript: Restart TS Server** from the command palette |
+
+## Scripts
+
+| Command | What it does |
+|---------|--------------|
+| `npm start` | Start the Expo dev server |
+| `npx expo start -c` | Start with a cleared cache |
+| `npx expo install --check` | List packages that don't match your Expo version |
