@@ -38,4 +38,6 @@ function Body({ note, onClose, onSave }: Props & { note: Note }) {
 // Stylesheet for RenameDialog modal backdrop, card surface, text input, and action buttons
 const s = StyleSheet.create({
     back: { flex: 1, backgroundColor: 'rgba(15,25,40,0.45)', justifyContent: 'center', padding: 24 },
+    dialog: { backgroundColor: '#fff', borderRadius: 20, padding: 20 },
+    title: { fontFamily: F.s, fontSize: 19, color: C.ink, marginBottom: 14 },
 });
