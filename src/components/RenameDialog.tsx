@@ -40,4 +40,8 @@ const s = StyleSheet.create({
     back: { flex: 1, backgroundColor: 'rgba(15,25,40,0.45)', justifyContent: 'center', padding: 24 },
     dialog: { backgroundColor: '#fff', borderRadius: 20, padding: 20 },
     title: { fontFamily: F.s, fontSize: 19, color: C.ink, marginBottom: 14 },
+    input: { fontFamily: F.r, fontSize: 16, color: C.ink, borderWidth: 1, borderColor: C.line, borderRadius: 12, paddingHorizontal: 14, height: 46 },
+
+
+    
 });
